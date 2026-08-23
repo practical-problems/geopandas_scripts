@@ -1,5 +1,5 @@
 import geopandas
-
+from pathlib import Path
 
 class GeoFile:
     def __init__(self, file_location : str):
@@ -25,3 +25,26 @@ class GeoFile:
         if self.gdf.crs is None:
             raise ValueError("There is no projections in the file!")
         self.gdf = self.gdf.to_crs(projection_to_be_set_to)
+
+
+def initialize_geo_files_through_folder_dir(folder_directory : str, file_type: str = ".shp", recursive : bool = False) -> tuple[
+    dict[str, GeoFile], dict[str, str]]: #it is not recursive by default
+    folder = Path(folder_directory)
+    errors = {}
+    output : dict[str, GeoFile] = {}
+    glob_status = "*"
+    if recursive:
+        glob_status = "**/*"
+    for file in folder.glob(glob_status+file_type): #find the file and create new GeoFile class
+        try:
+            if file_type == ".shp":
+                if not file.with_suffix(".dbf").exists():
+                    raise ValueError(f"{file.name}: missing .dbf file")
+                if not file.with_suffix(".shx").exists():
+                    raise ValueError(f"{file.name}: missing .shx file")
+            file_object =  GeoFile(str(file.resolve()))
+            output[file.name] = file_object
+        except ValueError as error_string:
+            errors[file.name] = str(error_string)
+    return output, errors
+
