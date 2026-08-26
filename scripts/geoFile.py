@@ -31,7 +31,7 @@ class GeoFile:
         self.gdf = self.gdf.to_crs(projection_to_be_set_to)
 
 
-def initialize_geo_files_through_folder_dir(folder_directory : str, file_type: str = ".shp", recursive : bool = False) -> tuple[
+def init_geo_folder(folder_directory : str, file_type: str = ".shp", recursive : bool = False) -> tuple[
     dict[str, GeoFile], dict[str, str]]: #it is not recursive by default
     folder = Path(folder_directory)
     errors = {}
