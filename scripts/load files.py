@@ -20,4 +20,4 @@ match driverSelectionInput:
         driverSelection = "SQLite"
     case "7":
         driverSelection = input("Then type in which drivers".strip())
-gdf.to_file(filename= saveName, driver=driverSelection)
+gdf.to_file(filename= saveName, driver=driverSelectionInput)
