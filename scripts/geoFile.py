@@ -16,12 +16,16 @@ class GeoFile:
             raise ValueError("There no file loaded in memory")
         self.gdf.to_file(filename = save_file_name, driver = save_file_type)
 
-    def set_projection(self, projection_to_be_set_to : str):
+    def set_crs(self, projection_to_be_set_to : str):
+        if not self.loadStatus:
+            raise ValueError("You must call .load() before setting a projection.")
         if self.gdf.crs is not None:
             raise ValueError("There already an projection in " + str(self.fileLocation))
         self.gdf = self.gdf.set_crs(projection_to_be_set_to)
 
     def reproject(self, projection_to_be_set_to : str):
+        if not self.loadStatus:
+            raise ValueError("You must call .load() before changing the projection.")
         if self.gdf.crs is None:
             raise ValueError("There is no projections in the file!")
         self.gdf = self.gdf.to_crs(projection_to_be_set_to)
