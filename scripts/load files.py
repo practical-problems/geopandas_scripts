@@ -9,7 +9,7 @@ match driverSelectionInput:
     case "1":
         driverSelection = "GPKG"
     case "2":
-        driverSelection = "None"
+        driverSelection = "ESRI Shapefile"
     case "3":
         driverSelection = "GeoJSON"
     case "4":
